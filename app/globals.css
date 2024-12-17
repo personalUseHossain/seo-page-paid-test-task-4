@@ -19,3 +19,21 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.active-btn{
+    @apply bg-theme py-2 px-6 rounded-lg text-white
+}
+
+.inactive-btn{
+    @apply border-2 border-theme text-theme py-2 px-6 rounded-lg
+}
+
+bold{
+    font-weight: 700;
+}
+
+
+.light_btn{
+    @apply p-3 bg-light_btn rounded-lg text-theme
+}
