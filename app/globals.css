@@ -37,3 +37,14 @@ bold{
 .light_btn{
     @apply p-3 bg-light_btn rounded-lg text-theme
 }
+
+.hide-scroll::-webkit-scrollbar{
+    display: none;
+}
+
+
+@media (width < 1513px) {
+    .chart-container{
+        width: 100%;
+    }
+}
