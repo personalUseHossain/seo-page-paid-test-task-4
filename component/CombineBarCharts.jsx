@@ -113,7 +113,7 @@ export default function CombineBarCharts({
         {editModal && (
           <div className="fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-50">
             <div
-              className="modal bg-white w-1/2 shadow-lg rounded-lg max-w-2xl p-6 grid gap-6"
+              className="modal overflow-scroll h-[90vh] hide-scroll bg-white w-1/2 shadow-lg rounded-lg max-w-2xl p-6 grid gap-6"
               ref={modalRef}
             >
               <div className="bg-theme text-white text-xl font-bold py-2 px-4 rounded-md flex justify-between items-center">
