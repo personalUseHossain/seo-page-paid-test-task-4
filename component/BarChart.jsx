@@ -210,38 +210,38 @@ const BarChart = ({
 
 
   
-  // Custom plugin to ensure bars with zero value have a minimum height
-  const minHeightPlugin = {
-    id: 'minHeightPlugin',
-    beforeDraw: (chart) => {
-      const ctx = chart.ctx;
-      const datasets = chart.data.datasets;
+//   // Custom plugin to ensure bars with zero value have a minimum height
+//   const minHeightPlugin = {
+//     id: 'minHeightPlugin',
+//     beforeDraw: (chart) => {
+//       const ctx = chart.ctx;
+//       const datasets = chart.data.datasets;
   
-      // Only apply minimum height logic if minBarHeight is set and greater than 0
-      if (minBarHeight) {
-        datasets.forEach((dataset, datasetIndex) => {
-          const meta = chart.getDatasetMeta(datasetIndex);
-          meta.data.forEach((bar, index) => {
-            const value = dataset.data[index];
+//       // Only apply minimum height logic if minBarHeight is set and greater than 0
+//       if (minBarHeight) {
+//         datasets.forEach((dataset, datasetIndex) => {
+//           const meta = chart.getDatasetMeta(datasetIndex);
+//           meta.data.forEach((bar, index) => {
+//             const value = dataset.data[index];
   
-            // If the value is zero, adjust the height to the minimum value
-            if (value === 0) {
-              bar.height = minBarHeight;
-              bar.y = chart.scales['y'].getPixelForValue(0) - bar.height;
-            }
-          });
-        });
-      }
-    },
-  };
+//             // If the value is zero, adjust the height to the minimum value
+//             if (value === 0) {
+//               bar.height = minBarHeight;
+//               bar.y = chart.scales['y'].getPixelForValue(0) - bar.height;
+//             }
+//           });
+//         });
+//       }
+//     },
+//   };
   
 
-  // Register the minHeightPlugin only when minBarHeight > 0
-  useEffect(() => {
-    if (minBarHeight) {
-      ChartJS.register(minHeightPlugin);
-    }
-  }, [minBarHeight]);
+//   // Register the minHeightPlugin only when minBarHeight > 0
+//   useEffect(() => {
+//     if (minBarHeight) {
+//       ChartJS.register(minHeightPlugin);
+//     }
+//   }, [minBarHeight]);
 
   // Generate gradients
   const createGradients = (chart) => {
