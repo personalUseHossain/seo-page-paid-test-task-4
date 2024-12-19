@@ -14,13 +14,16 @@ export default function CombineBarCharts({
   top_label,
   info = false,
   x_label,
+  yAxisArrowShift,
   y_label,
   editButton = true,
   editButtonClass = "",
   chartBg = "white",
   buttonClass = "light_btn",
   chartHeadingClass = "",
-  barRounded = false
+  barRounded = false,
+  yAxisXShift,
+  yAxisYShift
 }) {
   const [editModal, setEditModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
@@ -522,9 +525,12 @@ export default function CombineBarCharts({
           x_label={x_label}
           y_label={y_label}
           width="90%"
-          height="200px"
+          height="250px"
+          yAxisXShift={yAxisXShift}
+          yAxisYShift={yAxisYShift}
           showInsideBarText={false}
           minBarHeight={true}
+          yAxisArrowShift={yAxisArrowShift}
         />
       </div>
 
@@ -559,12 +565,15 @@ export default function CombineBarCharts({
           barColors={barColors2}
           x_label={x_label}
           y_label={y_label}
+          yAxisXShift={yAxisXShift}
+          yAxisYShift={yAxisYShift}
           rightText={[
             { value: "Ratio: 22%\nIncentive 50%", color: "red", index: 2 },
           ]}
+          yAxisArrowShift={yAxisArrowShift}
           top_label={true}
           width="90%"
-          height="200px"
+          height="250px"
           barRounded={barRounded}
           showInsideBarText={false}
         />

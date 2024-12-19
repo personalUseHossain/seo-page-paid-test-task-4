@@ -534,7 +534,7 @@ export const bonusPointsData = [
         xLabel: "Upsale/Cross Sale Amount",
         yLabel: "Points Percentage",
         chartData1: {
-          labels: ["0-6000", "6001-8000", "8001-10000", "10001-12000", "12001-15000", "15001-Higher"],
+          labels: ["0", "6000", "8000", "10000", "12000", "15000", "15000+"],
           datasets: [
             {
               label: "Bonux Points",
@@ -545,7 +545,7 @@ export const bonusPointsData = [
           ],
         },
         chartData2: {
-            labels: ["0-6000", "6001-8000", "8001-10000", "10001-12000", "12001-15000", "15001-Higher"],
+            labels: ["0", "6000", "8000", "10000", "12000", "15000", "15000+"],
           datasets: [
             {
               label: "Bonux Points",
@@ -576,7 +576,7 @@ export const UnreleasedPaymentAmount = [
         xLabel: "Unreleased Payment Amount",
         yLabel: "Incentive Percentage",
         chartData1: {
-          labels: ["0-5000", "5001-10000", "10001-15000", "15001-20000", "20001-25000", "25001-30000", "30001-35000"],
+          labels: ["0", "5000", "10000", "15000", "20000", "25000", "30000", "35000"],
           datasets: [
             {
               label: "Incentive Percentage",
@@ -587,7 +587,7 @@ export const UnreleasedPaymentAmount = [
           ],
         },
         chartData2: {
-            labels: ["0-5000", "5001-10000", "10001-15000", "15001-20000", "20001-25000", "25001-30000", "30001-35000"],
+            labels: ["0", "5000", "10000", "15000", "20000", "25000", "30000", "35000"],
           datasets: [
             {
               label: "Revision Vs Task Ratio",

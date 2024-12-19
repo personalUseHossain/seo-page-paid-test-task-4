@@ -31,6 +31,9 @@ import {
 import useOutsideClick from "@/hooks/useOutsideClick";
 import IncentiveSection from "@/component/IncentiveSection";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 export default function Home() {
   //states
   const [selectedFirstGroup, setSelectedFirstGroup] = useState("Current");
@@ -50,8 +53,20 @@ export default function Home() {
     setCashValueForEveryRegularPointModalOpen,
   ] = useState(false);
   const [incentivePointInfoOpen, setIncentivePointInfoOpen] = useState(false);
-  const [bonusPoint, setBonusPoint] = useState(false)
-  const [incentivePercentage, setIncentivePercentage] = useState(false)
+  const [bonusPoint, setBonusPoint] = useState(false);
+  const [incentivePercentage, setIncentivePercentage] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    if(start && end){
+    setIsPickerOpen(false)
+    }
+  };
 
   useEffect(() => {
     if (selectedFirstGroup == "Incentive factors") {
@@ -65,6 +80,10 @@ export default function Home() {
     }
   }, [incentiveFactorsModalOpen]);
 
+  const closeModal = () => {
+    setIsPickerOpen(false);
+  };
+
   //refs for modal/popup
   const regularPopupRef = useRef(null);
   const incentivePopupRef = useRef(null);
@@ -72,6 +91,7 @@ export default function Home() {
   const upSaleCrossSalePointsPopupRef = useRef(null);
   const IncentiveFactorsRef = useRef(null);
   const cashValeForEveryREgularPointRef = useRef(null);
+  const datePickerRef = useRef(null)
 
   useOutsideClick(regularPopupRef, setRegularPopup);
   useOutsideClick(incentivePopupRef, setIncentivePoints);
@@ -82,15 +102,49 @@ export default function Home() {
     cashValeForEveryREgularPointRef,
     setCashValueForEveryRegularPointModalOpen
   );
+  useOutsideClick(datePickerRef, setIsPickerOpen)
 
   return (
     <>
       <div className="p-4">
         <div className="flex justify-between items-center flex-wrap gap-3 mb-8">
-          <div className="flex text-sm gap-2">
-            <Image src={Calendar} alt="Calender" height={20} width={20} />
-            <p>Date: December 1, 2023 to Dece...</p>
+        <div>
+      {/* Trigger to open the modal */}
+      <div
+        className="flex text-sm gap-2 items-center cursor-pointer border p-2 rounded"
+        onClick={() => setIsPickerOpen(true)}
+      >
+        <Image src={Calendar} alt="Calendar" height={20} width={20} />
+        <p>
+          Date: {startDate ? startDate.toLocaleDateString() : "Start Date"} to{" "}
+          {endDate ? endDate.toLocaleDateString() : "End Date"}
+        </p>
+      </div>
+
+      {/* Modal */}
+      {isPickerOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div ref={datePickerRef} className="bg-white p-6 rounded-md shadow-lg w-96 grid place-items-center">
+            <div className="flex mb-4 justify-between items-center w-full">
+            <h3 className="text-lg font-bold justify-self-start">Select Date Range</h3>
+            <button
+                onClick={closeModal}
+              >
+                X
+              </button>
+            </div>
+            <DatePicker
+              selected={startDate}
+              onChange={handleDateChange}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              inline
+            />
           </div>
+        </div>
+      )}
+    </div>
           <div className="flex text-sm gap-2">
             <Image src={Employee} alt="Employee" height={20} width={20} />
             <p>
@@ -294,7 +348,10 @@ export default function Home() {
                         i
                       </div>
                       {incentivePointInfoOpen && (
-                        <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]" style={{fontSize: "13px"}}>
+                        <p
+                          className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]"
+                          style={{ fontSize: "13px" }}
+                        >
                           Hello world Hello world Hello world Hello world Hello
                           world
                         </p>
@@ -320,6 +377,7 @@ export default function Home() {
                     barColors2={upSaleCrossSaleAmount[0].barColor2}
                     chartData1={upSaleCrossSaleAmount[0].chartData1}
                     chartData2={upSaleCrossSaleAmount[0].chartData2}
+                    yAxisArrowShift={50}
                     top_label={upSaleCrossSaleAmount[0].name}
                     x_label={upSaleCrossSaleAmount[0].xLabel}
                     y_label={upSaleCrossSaleAmount[0].yLabel}
@@ -367,6 +425,8 @@ export default function Home() {
 
                 <div className="bg-secoundary_background p-5">
                   <CombineBarCharts
+                    yAxisXShift={6}
+                    yAxisYShift={78}
                     barColors1={bonusPointsData[0].barColor1}
                     barColors2={bonusPointsData[0].barColor2}
                     chartData1={bonusPointsData[0].chartData1}
@@ -411,19 +471,23 @@ export default function Home() {
                       />
                       Your bonus points: <b className="text-theme">60 pt</b>{" "}
                       <div className="relative">
-                      <div
-                        onMouseEnter={() => setBonusPoint(true)}
-                        onMouseLeave={() => setBonusPoint(false)}
-                        className="h-4 w-4 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm"
-                      >
-                        i
+                        <div
+                          onMouseEnter={() => setBonusPoint(true)}
+                          onMouseLeave={() => setBonusPoint(false)}
+                          className="h-4 w-4 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm"
+                        >
+                          i
+                        </div>
+                        {bonusPoint && (
+                          <p
+                            className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem] "
+                            style={{ fontSize: "13px" }}
+                          >
+                            This value is bonus points based on release payment
+                            amount
+                          </p>
+                        )}
                       </div>
-                      {bonusPoint && (
-                        <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem] "  style={{fontSize: "13px"}}>
-                          This value is bonus points based on release payment amount
-                        </p>
-                      )}
-                    </div>
                     </button>
                     <button className="flex items-center justify-center gap-2">
                       <Image
@@ -436,19 +500,22 @@ export default function Home() {
                       Incentive Percentage:{" "}
                       <b className="text-theme">100 Taka</b>{" "}
                       <div className="relative">
-                      <div
-                        onMouseEnter={() => setIncentivePercentage(true)}
-                        onMouseLeave={() => setIncentivePercentage(false)}
-                        className="h-4 w-4 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm"
-                      >
-                        i
+                        <div
+                          onMouseEnter={() => setIncentivePercentage(true)}
+                          onMouseLeave={() => setIncentivePercentage(false)}
+                          className="h-4 w-4 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm"
+                        >
+                          i
+                        </div>
+                        {incentivePercentage && (
+                          <p
+                            className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]"
+                            style={{ fontSize: "13px" }}
+                          >
+                            This value is unrelease payment amount
+                          </p>
+                        )}
                       </div>
-                      {incentivePercentage && (
-                        <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]"  style={{fontSize: "13px"}}>
-                          This value is unrelease payment amount
-                        </p>
-                      )}
-                    </div>
                     </button>
                     <button className="flex items-center justify-center gap-2">
                       <Image
