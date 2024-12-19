@@ -228,6 +228,7 @@ export const IdealVsAchieved = {
         ["#febf0f", "#ffe397"],
         ["#ffabab", "#ffabab"],
         ["#ffabab", "#ffabab"],
+        ["#ffabab", "#ffabab"],
       ],
 
       barColor2: [["#049bff", "#bae6fe"]],
@@ -285,6 +286,7 @@ export const IdealVsAchieved = {
         ["#febf0f", "#ffe397"],
         ["#ffabab", "#ffabab"],
         ["#ffabab", "#ffabab"],
+        ["#ffabab", "#ffabab"],
       ],
 
       barColor2: [["#049bff", "#bae6fe"]],
@@ -340,6 +342,7 @@ export const IdealVsAchieved = {
         ["#049bff", "#bae6fe"],
         ["#febf0f", "#ffe397"],
         ["#FFA928", "#FFEACC"],
+        ["#ffabab", "#ffabab"],
         ["#ffabab", "#ffabab"],
         ["#ffabab", "#ffabab"],
       ],
@@ -577,7 +580,7 @@ export const UnreleasedPaymentAmount = [
           datasets: [
             {
               label: "Incentive Percentage",
-              data: [100, 80, 50, 0, 0, 0], // Values
+              data: [100, 80, 50, 10, 0, 0, 0], // Values
               borderRadius: 10,
               barThickness: 50,
             },
@@ -599,6 +602,7 @@ export const UnreleasedPaymentAmount = [
             ["#049bff", "#bae6fe"],
             ["#febf0f", "#ffe397"],
             ["#febf0f", "#ffe397"],
+            ["#ffabab", "#ffabab"],
             ["#ffabab", "#ffabab"],
             ["#ffabab", "#ffabab"],
         ],
