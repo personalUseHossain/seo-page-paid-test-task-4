@@ -78,7 +78,7 @@ export default function CombineBarCharts({
   }, []);
 
   return (
-    <div className="flex gap-5 flex-wrap mb-5 justify-start">
+    <div className="flex gap-5 flex-wrap mb-5 justify-start overflow-x-scroll hide-scroll">
       <div
         style={{ background: chartBg }}
         className="p-5 rounded-lg min-w-[700px] w-[49%] chart-container"
@@ -518,12 +518,12 @@ export default function CombineBarCharts({
         <BarChart
           chartData={chartData1}
           barColors={barColors1}
-          top_label={top_label}
+          top_label={false}
           x_label={x_label}
           y_label={y_label}
           width="90%"
           height="200px"
-          showInsideBarText={true}
+          showInsideBarText={false}
           minBarHeight={true}
         />
       </div>
@@ -562,10 +562,14 @@ export default function CombineBarCharts({
           rightText={[
             { value: "Ratio: 22%\nIncentive 50%", color: "red", index: 2 },
           ]}
+          top_label={true}
           width="90%"
           height="200px"
           barRounded={barRounded}
+          showInsideBarText={false}
         />
+        <p className="text-[13px] flex gap-1 justify-center items-center">{x_label}:
+            <p style={{color:  barColors2[0][0]}}>{Math.max(...chartData2.datasets[0].data)}%</p></p>
       </div>
     </div>
   );

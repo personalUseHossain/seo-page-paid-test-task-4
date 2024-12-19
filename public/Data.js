@@ -3,8 +3,8 @@ export const IdealVsAchieved = {
   charts: [
     {
       name: "Revision vs Task ratio",
-      xLabel: "Percentage",
-      yLabel: "Incentive",
+      xLabel: "Revision Vs Task ratio",
+      yLabel: "Incentive Percentage",
       chartData1: {
         labels: [
           "0-10%",
@@ -41,7 +41,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0], // Set the value at index 2 (22% on X-axis) to 50
             borderRadius: 10,
             barThickness: 10,
           },
@@ -99,7 +99,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 10,
           },
@@ -157,7 +157,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 10,
           },
@@ -192,7 +192,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Incentive Percentage",
-            data: [120, 100, 80, 20, 0, 0, 0], // Values
+            data: [120, 100, 80, 50, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 50,
           },
@@ -215,7 +215,64 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0], // Values
+            borderRadius: 10,
+            barThickness: 10,
+          },
+        ],
+      },
+      barColor1: [
+        ["#159758", "#6bf8ae"],
+        ["#159758", "#6bf8ae"],
+        ["#049bff", "#bae6fe"],
+        ["#febf0f", "#ffe397"],
+        ["#ffabab", "#ffabab"],
+        ["#ffabab", "#ffabab"],
+      ],
+
+      barColor2: [["#049bff", "#bae6fe"]],
+    },
+    {
+      name: "Milestone Cancelation Rate",
+      xLabel: "Milestone Cancelation Rate",
+      yLabel: "Incentive percentage",
+      chartData1: {
+        labels: [
+          "0-3%",
+          "4-5%",
+          "6-10%",
+          "11-15%",
+          "16-20%",
+          "21-30%",
+          "31-100%",
+        ],
+        datasets: [
+          {
+            label: "Incentive Percentage",
+            data: [120, 100, 50, 20, 0, 0, 0], // Values
+            borderRadius: 10,
+            barThickness: 50,
+          },
+        ],
+      },
+      chartData2: {
+        labels: [
+          "0%",
+          "10%",
+          "20%",
+          "30%",
+          "40%",
+          "50%",
+          "60%",
+          "70%",
+          "80%",
+          "90%",
+          "100%",
+        ],
+        datasets: [
+          {
+            label: "Revision Vs Task Ratio",
+            data: [0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 10,
           },
@@ -272,7 +329,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 10,
           },
@@ -322,7 +379,7 @@ export const IdealVsAchieved = {
         datasets: [
           {
             label: "Revision Vs Task Ratio",
-            data: [0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100], // Values
+            data: [0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Values
             borderRadius: 10,
             barThickness: 10,
           },
@@ -430,8 +487,8 @@ export const SecondSectionData = [
 export const upSaleCrossSaleAmount = [
     {
         name: "Upsale/Croll Sale Amount",
-        xLabel: "Points Percentage",
-        yLabel: "Upsale/Crolls Sale percentage",
+        xLabel: "Upsale/Cross Sale Amount",
+        yLabel: "Points Percentage",
         chartData1: {
           labels: ["1-500%", "501-1200$", "1201-1800$", "1801-3000$", "3001-higher"],
           datasets: [
@@ -471,8 +528,8 @@ export const upSaleCrossSaleAmount = [
 export const bonusPointsData = [
     {
         name: "Bonus Points Based on Released Amount",
-        xLabel: "Released Amounts",
-        yLabel: "Bonus points",
+        xLabel: "Upsale/Cross Sale Amount",
+        yLabel: "Points Percentage",
         chartData1: {
           labels: ["0-6000", "6001-8000", "8001-10000", "10001-12000", "12001-15000", "15001-Higher"],
           datasets: [

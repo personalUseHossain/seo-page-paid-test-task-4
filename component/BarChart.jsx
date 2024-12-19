@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -14,8 +12,141 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+// Define the custom plugin for drawing the labels above the bars
+// const doubleLabels = {
+//   id: "doubleLabels",
+//   afterDatasetsDraw(chart, args, plugins) {
+//     const { ctx, data } = chart;
+//     const top_label = chart.options.top_label; // Get top_label from chart options
+//     ctx.save();
+
+//     // Iterate through the data points of the first dataset (index 0)
+//     chart.getDatasetMeta(0).data.forEach((dataPoint, index) => {
+//       // Get the value of the current data point from the dataset
+//       const value = chart.data.datasets[0].data[index];
+//       const xLabel = chart.data.labels[index];
+
+//       // Only draw the label if the value is greater than 0
+//       if (value > 0 && top_label) {
+//         ctx.font = 'thin 12px sans-serif';
+//         ctx.fillStyle = 'black'; // You can dynamically adjust this based on barColor if needed
+//         ctx.fillText(`${xLabel}, ${value}%`, dataPoint.x - 20, dataPoint.y - 9); // -10 to position the text above the bar
+
+//         ctx.rotate(-Math.PI / 2)
+
+
+//         const barHeight = dataPoint.height; // Get the height of the bar
+//         const barCenterY = dataPoint.y + barHeight / 2;
+
+//         // Draw the text vertically (start from top to bottom)
+//         ctx.fillText(`Rate: ${xLabel}`, dataPoint.x + 15, barCenterY - 10); // -10 to adjust for font size
+//         ctx.fillText(`Incentive ${value}`, dataPoint.x + 15, barCenterY + 5);
+//       }
+//     });
+
+//     ctx.restore();
+//   }
+// };
+
+const doubleLabels = {
+    id: "doubleLabels",
+    afterDatasetsDraw(chart, args, plugins) {
+      const { ctx } = chart;
+      const top_label = chart.options.top_label; // Get top_label from chart options
+      ctx.save();
+  
+      // Iterate through the data points of the first dataset (index 0)
+      chart.getDatasetMeta(0).data.forEach((dataPoint, index) => {
+        const value = chart.data.datasets[0].data[index];
+        const xLabel = chart.data.labels[index];
+  
+        // Only draw the label if the value is greater than 0
+        if (value > 0 && top_label) {
+            function extractNumber(str) {
+                let number;
+                let symbol = "";
+              
+                // Check if the string contains a hyphen (range)
+                if (str.includes('-')) {
+                  // Split the string by '-' and take the first part
+                  number = parseInt(str.split('-')[0], 10);
+                } else {
+                  // If it's just a single value, directly parse it
+                  number = parseInt(str, 10);
+                }
+              
+                // Check for percentage symbol
+                if (str.includes('%')) {
+                  symbol = '%';
+                }
+                
+                // Check for dollar symbol
+                if (str.includes('$')) {
+                  symbol = '$';
+                }
+              
+                // Add the symbol in the appropriate position
+                if (symbol === '%') {
+                  return `${number}${symbol}`;  // Append % to the number
+                } else if (symbol === '$') {
+                  return `${symbol}${number}`;  // Prepend $ to the number
+                }
+              
+                // Return just the number if there's no symbol
+                return number;
+              }
+
+
+          // Draw the horizontal label (above the bar)
+          ctx.font = "12px sans-serif";
+          ctx.fillStyle = "black";
+          ctx.fillText(`${extractNumber(xLabel)}, ${value}%`, dataPoint.x - 20, dataPoint.y - 10);
+  
+          const barHeight = dataPoint.height; // Get the height of the bar
+        const barCenterY = dataPoint.y + barHeight / 2; // Vertical center of the bar
+
+        // Adjust the text position to center it vertically relative to the bar
+        ctx.fillText(`Rate: ${extractNumber(xLabel)}`, dataPoint.x + 15, barCenterY - 10); // -10 to adjust for font size
+        ctx.fillText(`Incentive ${value}%`, dataPoint.x + 15, barCenterY + 5); 
+        }
+      });
+  
+      ctx.restore();
+    },
+  };
+  
+  
+
+
+
+const topLable = {
+  id: "topLable",
+  afterDatasetsDraw(chart, args, plugins) {
+    const { ctx, data } = chart;
+    ctx.save();
+
+    // Iterate through the data points of the first dataset (index 0)
+    chart.getDatasetMeta(0).data.forEach((dataPoint, index) => {
+      // Get the value of the current data point from the dataset
+      const value = chart.data.datasets[0].data[index];
+        const top_label = chart.options.top_label
+      // Only draw the label if the value is greater than 0
+
+      if (value > 0 && !top_label) {
+        ctx.textAlign = 'center'
+        ctx.font = 'thin 12px sans-serif';
+        ctx.fillStyle = 'white'; // You can dynamically adjust this based on barColor if needed
+        ctx.fillText(`${value}%`, dataPoint.x, dataPoint.y + 15); // -10 to position the text above the bar
+
+      }
+    });
+
+    ctx.restore();
+  }
+};
+
 // Register necessary ChartJS components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, doubleLabels, topLable);
 
 const BarChart = ({
   chartData,
@@ -25,27 +156,13 @@ const BarChart = ({
   height = '400px',
   x_label,
   y_label,
-  top_label = [],
+  top_label = false,
   showInsideBarText = false,
   barRounded = false,
   minBarHeight = false, // Minimum height for bars with zero value
 }) => {
   const chartRef = useRef(null);
   const [gradientColors, setGradientColors] = useState([]);
-  
-//   useEffect(() => {
-//     if (showInsideBarText) {
-//       // Register the plugin only if it's needed
-//       ChartJS.register(ChartDataLabels);
-//     }
-//     return () => {
-//       if (showInsideBarText) {
-//         // Unregister the plugin when it's no longer needed
-//         ChartJS.unregister(ChartDataLabels);
-//       }
-//     };
-//   }, [showInsideBarText]);
-
 
   // Generate gradients
   const createGradients = (chart) => {
@@ -77,25 +194,15 @@ const BarChart = ({
     })),
   };
 
-
+  // Include top_label in chart options
   const defaultOptions = {
+    top_label,
+    showInsideBarText,
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: { enabled: true },
-      datalabels: showInsideBarText && {
-        color: '#FFFFFF',
-        align: 'center',
-        anchor: 'center',
-        formatter: function(value) {
-          return value + '%';
-        },
-        font: {
-          size: 12,
-          weight: 'bold',
-        },
-      },
     },
     scales: {
       x: {
@@ -104,16 +211,16 @@ const BarChart = ({
         ticks: { font: { size: 14 } },
         title: {
           display: true,
-          text: x_label,
+          text: `----------------------------------------------------------> ${x_label} <-----------------------------------------------------------`,
           color: '#1492E6',
         },
       },
       y: {
+        grace: 10,
         stacked: true,
         beginAtZero: true,
         min: 0,
         ticks: {
-          stepSize: 25,
           callback: (value) => value + '%',
         },
         grid: {
@@ -122,7 +229,7 @@ const BarChart = ({
         },
         title: {
           display: true,
-          text: y_label,
+          text: `${y_label}`,
           color: '#1492E6',
         },
       },

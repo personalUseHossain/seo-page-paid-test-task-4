@@ -7,6 +7,10 @@ import StarImageBlack from "@/public/star_black.svg";
 import TakaImage from "@/public/taka.svg";
 import MoneyBag from "@/public/bag_of_money_black.svg";
 import Pen from "@/public/pen.svg";
+import Calendar from '@/public/calendar.svg'
+import Employee from '@/public/employee.svg'
+import ArrowDown from '@/public/arrow-down.svg'
+import Department from '@/public/department.svg'
 
 import { useEffect, useRef, useState } from "react";
 
@@ -25,6 +29,7 @@ import {
   upSaleCrossSaleAmount,
 } from "@/public/Data";
 import useOutsideClick from "@/hooks/useOutsideClick";
+import IncentiveSection from "@/component/IncentiveSection";
 
 export default function Home() {
   //states
@@ -44,6 +49,7 @@ export default function Home() {
     cashValueForEveryRegularPointModalOpen,
     setCashValueForEveryRegularPointModalOpen,
   ] = useState(false);
+  const [incentivePointInfoOpen, setIncentivePointInfoOpen] = useState(false)
 
   useEffect(() => {
     if (selectedFirstGroup == "Incentive factors") {
@@ -76,7 +82,24 @@ export default function Home() {
   );
 
   return (
+    <>
     <div className="p-4">
+        <div className="flex justify-between items-center flex-wrap gap-3 mb-8">
+            <div className="flex text-sm gap-2">
+                <Image src={Calendar} alt="Calender" height={20} width={20} />
+                <p>Date: December 1, 2023 to Dece...</p>
+            </div>
+            <div className="flex text-sm gap-2">
+                <Image src={Employee} alt="Employee" height={20} width={20} />
+                <p>Employee: <span className="text-theme">Faria Abbashi</span></p>
+                <Image src={ArrowDown} alt="ArrowDown" height={20} width={20} />
+
+            </div>
+            <div className="flex text-sm gap-2">
+                <Image src={Department} alt="Department" height={20} width={20} />
+                <p>Department: <span className="text-theme">Web Development</span></p>
+            </div>
+        </div>
       {/* top button section */}
       <div className="flex justify-between items-center flex-wrap gap-5">
         <div className="flex gap-2 flex-wrap">
@@ -171,7 +194,7 @@ export default function Home() {
             })}
           </div>
           <div className="p-4 bg-secoundary_background rounded-lg mb-10 flex justify-between flex-wrap gap-4 items-center">
-            <div className="flex flex-col items-end w-fit overflow-scroll hide-scroll">
+            <div className="overflow-scroll hide-scroll w-fit">
               {SecondSectionData.map((data, idx) => {
                 return (
                   <div
@@ -179,18 +202,16 @@ export default function Home() {
                     className="flex justify-between items-center  mb-3 w-[50rem]" // Ensuring all items take full width
                   >
                     <p
-                      className="font-bold"
+                    className="flex-1 mr-5"
                       style={{
                         color: data.nameColor,
-                        flexShrink: 0,
-                        width: "150px",
                       }}
                     >
                       {data.name}
                     </p>{" "}
                     {/* Ensuring name width is fixed */}
                     <p
-                      className="font-bold"
+                      className="font-bold flex-1"
                       style={{ color: data.achivedColor, flexShrink: 0 }}
                     >
                       {`Achieved: ${data.achivedPercentage}`}%
@@ -258,10 +279,24 @@ export default function Home() {
                 >
                   400 pt
                 </b>{" "}
+                <div className="relative">
+                <div
+                onMouseEnter={()=> setIncentivePointInfoOpen(true)}
+                onMouseLeave={()=> setIncentivePointInfoOpen(false)}
+                  className="h-4 w-4 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm"
+                >
+                  i
+                </div>
+                 {incentivePointInfoOpen && (
+                     <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]">
+                    Hello world Hello world Hello world Hello world Hello world
+                  </p>
+                 )}
+              </div>
               </div>
               <p className="mt-3">
                 <span className="text-red-500">Note:</span> If you fail to
-                maintain the minmum Incentive slab for any of he criteria, you
+                maintain the minmum Incentive slab for <br /> any of he criteria, you
                 overall incentive percentage will be zero.
               </p>
             </div>
@@ -740,6 +775,9 @@ export default function Home() {
           setPayModalOpen={setPayModalOpen}
         />
       )}
+    <IncentiveSection />
+
     </div>
+    </>
   );
 }
