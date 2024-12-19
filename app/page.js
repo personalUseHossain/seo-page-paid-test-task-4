@@ -8,7 +8,6 @@ import TakaImage from "@/public/taka.svg";
 import MoneyBag from "@/public/bag_of_money_black.svg";
 import Pen from "@/public/pen.svg";
 
-
 import { useEffect, useRef, useState } from "react";
 
 // custom component
@@ -41,7 +40,10 @@ export default function Home() {
   const [regularPopup, setRegularPopup] = useState(false);
   const [incentiveFactorsModalOpen, setIncentiveFactorsModalOpen] =
     useState(false);
-    const [cashValueForEveryRegularPointModalOpen, setCashValueForEveryRegularPointModalOpen] = useState(false)
+  const [
+    cashValueForEveryRegularPointModalOpen,
+    setCashValueForEveryRegularPointModalOpen,
+  ] = useState(false);
 
   useEffect(() => {
     if (selectedFirstGroup == "Incentive factors") {
@@ -61,14 +63,17 @@ export default function Home() {
   const finalPointPopupRef = useRef(null);
   const upSaleCrossSalePointsPopupRef = useRef(null);
   const IncentiveFactorsRef = useRef(null);
-  const cashValeForEveryREgularPointRef = useRef(null)
+  const cashValeForEveryREgularPointRef = useRef(null);
 
   useOutsideClick(regularPopupRef, setRegularPopup);
   useOutsideClick(incentivePopupRef, setIncentivePoints);
   useOutsideClick(upSaleCrossSalePointsPopupRef, setUpSaleCrossSalePointsPopup);
   useOutsideClick(finalPointPopupRef, setFinalPointPopup);
   useOutsideClick(IncentiveFactorsRef, setIncentiveFactorsModalOpen);
-  useOutsideClick(cashValeForEveryREgularPointRef, setCashValueForEveryRegularPointModalOpen);
+  useOutsideClick(
+    cashValeForEveryREgularPointRef,
+    setCashValueForEveryRegularPointModalOpen
+  );
 
   return (
     <div className="p-4">
@@ -120,8 +125,9 @@ export default function Home() {
                 src={StarImage}
                 height={35}
                 width={35}
+                alt="StarImage"
               />
-              Your obtained points: <bold>500 pt</bold>{" "}
+              Your obtained points: <b>500 pt</b>{" "}
             </button>
             <button className="active-btn flex items-center justify-center gap-2 flex-1 flex-wrap">
               <Image
@@ -129,17 +135,19 @@ export default function Home() {
                 src={TakaImage}
                 height={35}
                 width={35}
+                alt="TakaImage"
               />
-              Cash value for every regular point: <bold>20 Taka</bold>{" "}
+              Cash value for every regular point: <b>20 Taka</b>{" "}
               <button
-              onClick={() => setCashValueForEveryRegularPointModalOpen((prev) => !prev)}
-              className="bg-white p-2 rounded-lg text-theme px-4 ml-2 flex gap-2 items-center"
-            >
-              Edit
-              <Image src={Pen} height={25} width={25} alt="Pen Icon" />
+                onClick={() =>
+                  setCashValueForEveryRegularPointModalOpen((prev) => !prev)
+                }
+                className="bg-white p-2 rounded-lg text-theme px-4 ml-2 flex gap-2 items-center"
+              >
+                Edit
+                <Image src={Pen} height={25} width={25} alt="Pen Icon" />
+              </button>
             </button>
-            </button>
-            
           </div>
 
           {/* charts */}
@@ -225,14 +233,15 @@ export default function Home() {
                   src={StarImageBlack}
                   height={40}
                   width={40}
+                  alt="StarImage"
                 />
                 Your Regular points:{" "}
-                <bold
+                <b
                   onClick={() => setRegularPopup(true)}
                   className="text-red-500 border-b-[1px] border-red-500 cursor-pointer"
                 >
                   00 pt
-                </bold>{" "}
+                </b>{" "}
               </div>
               <div className="flex items-center justify-center gap-2 ">
                 <Image
@@ -240,14 +249,15 @@ export default function Home() {
                   src={StarImageBlack}
                   height={40}
                   width={40}
+                  alt="StarImage"
                 />
                 Your actual incentive points:{" "}
-                <bold
+                <b
                   onClick={() => setIncentivePoints(true)}
                   className="text-red-500 border-b-[1px] cursor-pointer border-red-500"
                 >
                   400 pt
-                </bold>{" "}
+                </b>{" "}
               </div>
               <p className="mt-3">
                 <span className="text-red-500">Note:</span> If you fail to
@@ -270,10 +280,12 @@ export default function Home() {
                 x_label={upSaleCrossSaleAmount[0].xLabel}
                 y_label={upSaleCrossSaleAmount[0].yLabel}
                 info={false}
-                editButton={false}
                 chartBg={"#E1F3FF"}
                 chartHeadingClass={"text-theme"}
-                buttonClass="light_btn !bg-white !text-theme"
+                editButtonClass={
+                  "bg-theme rounded-lg text-white px-4 flex items-center gap-2 justify-center"
+                }
+                buttonClass="active-btn !bg-white !text-theme"
               />
               <div className="flex justify-between gap-5 bg-[#E1F3FF] p-4 rounded-lg mb-5 font-bold">
                 <button className="flex items-center justify-center gap-2 flex-1">
@@ -282,14 +294,15 @@ export default function Home() {
                     src={StarImageBlack}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
                   Your upsale/cross sales points:{" "}
-                  <bold
+                  <b
                     onClick={() => setUpSaleCrossSalePointsPopup(true)}
                     className="text-theme border-b-2 border-theme"
                   >
                     60.05 pt
-                  </bold>{" "}
+                  </b>{" "}
                 </button>
                 <button className="flex items-center justify-center gap-2 flex-1">
                   <Image
@@ -297,9 +310,10 @@ export default function Home() {
                     src={MoneyBag}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
                   Cash value of every upsale/cross sale point:{" "}
-                  <bold className="text-theme">100 Taka</bold>{" "}
+                  <b className="text-theme">100 Taka</b>{" "}
                 </button>
               </div>
             </div>
@@ -317,7 +331,9 @@ export default function Home() {
                 x_label={bonusPointsData[0].xLabel}
                 y_label={bonusPointsData[0].yLabel}
                 info={false}
-                editButton={false}
+                editButtonClass={
+                  "bg-theme rounded-lg text-white px-4 flex items-center gap-2 justify-center"
+                }
                 chartBg={"#E1F3FF"}
                 chartHeadingClass={"text-theme"}
                 buttonClass="light_btn !bg-white !text-theme"
@@ -333,55 +349,69 @@ export default function Home() {
                 x_label={UnreleasedPaymentAmount[0].xLabel}
                 y_label={UnreleasedPaymentAmount[0].yLabel}
                 info={false}
-                editButton={false}
+                editButtonClass={
+                  "bg-theme rounded-lg text-white px-4 flex items-center gap-2 justify-center"
+                }
                 chartBg={"#E1F3FF"}
                 buttonClass="light_btn !bg-white !text-theme"
               />
 
               <div className="flex justify-between gap-5 bg-[#E1F3FF] p-4 rounded-lg mb-5 font-bold mt-20 flex-wrap">
-                <button className="flex items-center justify-center gap-2 flex-1">
+                <button className="flex items-center justify-center gap-2">
                   <Image
                     className="p-2 bg-white/25 rounded-md"
                     src={StarImageBlack}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
-                  Your bonus points: <bold className="text-theme">60 pt</bold>{" "}
+                  Your bonus points: <b className="text-theme">60 pt</b>{" "}
                 </button>
-                <button className="flex items-center justify-center gap-2 flex-1">
+                <button className="flex items-center justify-center gap-2">
                   <Image
                     className="p-2 bg-white/25 rounded-md"
                     src={StarImageBlack}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
-                  Incentive Percentage:{" "}
-                  <bold className="text-theme">100 Taka</bold>{" "}
+                  Incentive Percentage: <b className="text-theme">100 Taka</b>{" "}
                 </button>
-                <button className="flex items-center justify-center gap-2 flex-1">
+                <button className="flex items-center justify-center gap-2">
                   <Image
                     className="p-2 bg-white/25 rounded-md"
                     src={MoneyBag}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
                   Final points:{" "}
-                  <bold
+                  <b
                     className="text-theme border-b-2 border-theme"
                     onClick={() => setFinalPointPopup(true)}
                   >
                     48pt
-                  </bold>{" "}
+                  </b>{" "}
                 </button>
-                <button className="flex items-center justify-center gap-2 flex-1">
+                <button className="flex items-center justify-center gap-2 flex-wrap">
                   <Image
                     className="p-2 bg-white/25 rounded-md"
                     src={MoneyBag}
                     height={35}
                     width={35}
+                    alt="StarImage"
                   />
                   Cash value every bonus point:{" "}
-                  <bold className="text-theme">100 Taka</bold>{" "}
+                  <b className="text-theme">100 Taka</b>{" "}
+                  <button
+                    onClick={() =>
+                      setCashValueForEveryRegularPointModalOpen((prev) => !prev)
+                    }
+                    className="bg-white p-2 rounded-lg text-theme px-4 ml-2 flex gap-2 items-center"
+                  >
+                    Edit
+                    <Image src={Pen} height={25} width={25} alt="Pen Icon" />
+                  </button>
                 </button>
               </div>
             </div>
@@ -419,61 +449,59 @@ export default function Home() {
                   </div>
                   <div className="mt-4 flex justify-between">
                     <p>
-                      Your final points:{" "}
-                      <bold className="text-red-500">(00*00)</bold>
+                      Your final points: <b className="text-red-500">(00*00)</b>
                     </p>
                     <p className="text-red-500">00%</p>
                   </div>
                   <p className="mt-10 text-sm text-center">
-                    <bold className="text-red-500">** </bold> For regular
-                    points, you will be eligible for incentive only when you
-                    will have more than 100 incentive points in total
+                    <b className="text-red-500">** </b> For regular points, you
+                    will be eligible for incentive only when you will have more
+                    than 100 incentive points in total
                   </p>
                 </div>
               </div>
             </div>
           )}
           {cashValueForEveryRegularPointModalOpen && (
-          <div
-            className="fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-50"
-          >
-            <div
-              className="modal bg-white shadow-lg rounded-lg w-1/2 max-w-md p-6 grid gap-4"
-              ref={cashValeForEveryREgularPointRef}
-            >
-              {/* Title */}
-              <h1 className="text-black text-2xl font-bold text-center">
-                Cash value for every regular point:
-              </h1>
+            <div className="fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-50">
+              <div
+                className="modal bg-white shadow-lg rounded-lg w-1/2 max-w-md p-6 grid gap-4"
+                ref={cashValeForEveryREgularPointRef}
+              >
+                {/* Title */}
+                <h1 className="text-black text-2xl font-bold text-center">
+                  Cash value for every regular point:
+                </h1>
 
-               <div className="flex flex-col justify-center items-center ">
-               <p className="text-gray-400 mb-2">Current Value: <bold className="text-black">20 Taka</bold></p>
-               <p className="text-gray-400">New Value (Taka)</p>
-               </div>
+                <div className="flex flex-col justify-center items-center ">
+                  <p className="text-gray-400 mb-2">
+                    Current Value: <b className="text-black">20 Taka</b>
+                  </p>
+                  <p className="text-gray-400">New Value (Taka)</p>
+                </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder="Write here"
-                  className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Write here"
+                    className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
 
-              {/* Buttons */}
-              <div className="flex justify-center gap-4">
-                
-                <button
-                  className="active-btn px-8"
-                  onClick={() => {
-                    setCashValueForEveryRegularPointModalOpen(false)
-                  }}
-                >
-                 Save
-                </button>
+                {/* Buttons */}
+                <div className="flex justify-center gap-4">
+                  <button
+                    className="active-btn px-8"
+                    onClick={() => {
+                      setCashValueForEveryRegularPointModalOpen(false);
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
           {incentivePopup && (
             <div className="fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-50">
               <div
@@ -575,7 +603,7 @@ export default function Home() {
                     <p>80%</p>
                   </div>
                   <div className="mt-4 flex justify-between">
-                    <p>UYour fina points: (60*80):</p>
+                    <p>Your fina points: (60*80):</p>
                     <p>48pt</p>
                   </div>
                 </div>

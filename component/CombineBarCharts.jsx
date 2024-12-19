@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import BarChart from "./BarChart";
 import Pen from "@/public/pen.svg";
+import PenWhite from "@/public/pen_white.svg";
 import Image from "next/image";
 
 export default function CombineBarCharts({
@@ -14,10 +15,12 @@ export default function CombineBarCharts({
   info = false,
   x_label,
   y_label,
-  editButton=true,
-  chartBg="white",
-  buttonClass="light_btn",
-  chartHeadingClass=""
+  editButton = true,
+  editButtonClass = "",
+  chartBg = "white",
+  buttonClass = "light_btn",
+  chartHeadingClass = "",
+  barRounded = false
 }) {
   const [editModal, setEditModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
@@ -76,7 +79,10 @@ export default function CombineBarCharts({
 
   return (
     <div className="flex gap-5 flex-wrap mb-5 justify-start">
-      <div style={{background: chartBg}} className="p-5 rounded-lg min-w-[700px] w-[49%] chart-container">
+      <div
+        style={{ background: chartBg }}
+        className="p-5 rounded-lg min-w-[700px] w-[49%] chart-container"
+      >
         <div className="flex justify-between items-center gap-3 flex-wrap">
           <div className="flex gap-2">
             <h2 className={`mb-3 text-sm ${chartHeadingClass}`}>{top_label}</h2>
@@ -99,12 +105,21 @@ export default function CombineBarCharts({
           </div>
           <div className="flex gap-5 flex-wrap">
             {editButton && (
-                <button
+              <button
                 onClick={() => setEditModal((prev) => !prev)}
-                className="light_btn flex gap-2 items-center"
+                className={
+                  editButtonClass
+                    ? `${editButtonClass}`
+                    : "light_btn flex gap-2 items-center "
+                }
               >
                 Edit
-                <Image src={Pen} height={25} width={25} alt="Pen Icon" />
+                <Image
+                  src={editButtonClass ? PenWhite : Pen}
+                  height={25}
+                  width={25}
+                  alt="Pen Icon"
+                />
               </button>
             )}
             <button className={buttonClass}>Ideal</button>
@@ -324,7 +339,7 @@ export default function CombineBarCharts({
                 Add New Value
               </h1>
               <p className="text-gray-700 text-sm">
-                Current Range: <bold>{selectedEditAxisPercentage}</bold>
+                Current Range: <b>{selectedEditAxisPercentage}</b>
               </p>
               <p className="text-gray-700 text-sm">
                 New Range Value {xAxisEditModal && "(Percentage)"}
@@ -509,14 +524,18 @@ export default function CombineBarCharts({
           width="90%"
           height="200px"
           showInsideBarText={true}
+          minBarHeight={true}
         />
       </div>
 
-      <div style={{background: chartBg}} className="p-5 rounded-lg min-w-[700px] w-[49%] chart-container">
+      <div
+        style={{ background: chartBg }}
+        className="p-5 rounded-lg min-w-[700px] w-[49%] chart-container"
+      >
         <div className="flex justify-between items-center gap-3 flex-wrap">
-         <div className="flex gap-2 items-start justify-center">
-         <h2 className={`mb-3 text-sm ${chartHeadingClass}`}>{top_label}</h2>
-          {info && (
+          <div className="flex gap-2 items-start justify-center">
+            <h2 className={`mb-3 text-sm ${chartHeadingClass}`}>{top_label}</h2>
+            {info && (
               <div className="relative">
                 <div
                   onMouseEnter={() => setInfoYOn(true)}
@@ -525,13 +544,14 @@ export default function CombineBarCharts({
                 >
                   i
                 </div>
-                {infoYOn &&  (
+                {infoYOn && (
                   <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]">
                     Hello world Hello world Hello world Hello world Hello world
                   </p>
                 )}
               </div>
-            )}</div> 
+            )}
+          </div>
           <button className={buttonClass}>Achieved</button>
         </div>
         <BarChart
@@ -539,23 +559,12 @@ export default function CombineBarCharts({
           barColors={barColors2}
           x_label={x_label}
           y_label={y_label}
-          showInsideBarText={false}
-          topText={[
-            {
-              value: "22%, 50%",
-              color: "red",
-              index: 2,
-            },
-          ]}
           rightText={[
-            {
-              value: "Ratio: 22%\nIncentive 50%",
-              color: "red",
-              index: 2,
-            },
+            { value: "Ratio: 22%\nIncentive 50%", color: "red", index: 2 },
           ]}
           width="90%"
           height="200px"
+          barRounded={barRounded}
         />
       </div>
     </div>

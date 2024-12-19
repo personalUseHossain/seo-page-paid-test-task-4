@@ -1,7 +1,6 @@
 
-
-
 // 'use client';
+
 
 // import React, { useRef, useEffect, useState } from 'react';
 // import { Bar } from 'react-chartjs-2';
@@ -14,7 +13,8 @@
 //   Legend
 // } from 'chart.js';
 
-// // Register Chart.js components
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 // const BarChart = ({
@@ -25,11 +25,21 @@
 //   height = '400px',
 //   x_label,
 //   y_label,
-//   topText = [], // Array of { index: 'bar index', value: 'text', color: 'color' }
-//   leftText = [], // Array of { index: 'bar index', value: 'text', color: 'color' }
-//   rightText = [], // Array of { index: 'bar index', value: 'text', color: 'color' }
+//   top_label = [], // Array of { index: 'bar index', value: 'text', color: 'color' }
+//   showInsideBarText = false, // Toggle for text inside bars
+//   minBarHeight = 20,
 // }) => {
-//   const chartRef = useRef(null); // Reference to the chart
+
+    
+// // Register Chart.js components
+
+
+// if (showInsideBarText == true) {
+//     ChartJS.register(ChartDataLabels); // Register ChartDataLabels only if showInsideBarText is true
+//   }
+
+
+//   const chartRef = useRef(null);
 //   const [gradientColors, setGradientColors] = useState([]);
 
 //   // Generate gradients
@@ -37,8 +47,8 @@
 //     const ctx = chart.ctx;
 //     const gradients = barColors.map((colors) => {
 //       const gradient = ctx.createLinearGradient(0, 0, 0, chart.height);
-//       gradient.addColorStop(0, colors[0]); // Dark color at the top
-//       gradient.addColorStop(1, colors[1]); // Light color at the bottom
+//       gradient.addColorStop(0, colors[0]);
+//       gradient.addColorStop(1, colors[1]);
 //       return gradient;
 //     });
 //     return gradients;
@@ -58,80 +68,68 @@
 //       ...dataset,
 //       backgroundColor: gradientColors.length
 //         ? gradientColors
-//         : barColors.map((c) => c[1]), // Fallback to solid colors if gradients not ready
-//       borderRadius: dataset.borderRadius || 10, // Default rounded corners
-//       barThickness: dataset.barThickness || 50, // Default bar width
+//         : barColors.map((c) => c[1]),
+//       borderRadius: dataset.borderRadius || 10,
+//       barThickness: dataset.barThickness || 50,
 //     })),
 //   };
 
-//   // Custom plugin to render text on top, left, or right of bars
-//   const textPlugin = {
-//     id: 'textPlugin',
+//   const textInsideBarPlugin = {
+//     id: 'textInsideBarPlugin',
 //     beforeDraw: (chart) => {
-//       const ctx = chart.ctx;
-//       const chartArea = chart.chartArea;
-//       const xAxis = chart.scales['x'];
-//       const yAxis = chart.scales['y'];
+//       if (!showInsideBarText) return; // Do nothing if text display is disabled
 
-//       // Iterate over each dataset and each bar to draw the text
-//       chart.data.datasets.forEach((dataset, datasetIndex) => {
-//         dataset.data.forEach((dataValue, index) => {
-//           const bar = chart.getDatasetMeta(datasetIndex).data[index];
+//       const ctx = chart.ctx;
+//       const datasets = chart.data.datasets;
+
+//       datasets.forEach((dataset, datasetIndex) => {
+//         const meta = chart.getDatasetMeta(datasetIndex);
+//         meta.data.forEach((bar, index) => {
+//           const value = dataset.data[index];
 //           const barX = bar.x;
 //           const barY = bar.y;
 
+//           // If the value is 0, give it a minimum height to display it
+//           const adjustedHeight = value === 0 ? minBarHeight : bar.height;
+
 //           ctx.save();
-//           ctx.font = '14px Arial';
+//           ctx.font = 'bold 12px Arial';
+//           ctx.fillStyle = '#FFFFFF'; // White text color
+//           ctx.textAlign = 'center';
+//           ctx.textBaseline = 'middle';
 
-//           // Check if there's top text for this bar
-//           const topTextData = topText.find((item) => item.index === index);
-//           if (topTextData) {
-//             ctx.fillStyle = topTextData.color || '#000'; // Default to black if no color
-//             ctx.fillText(topTextData.value, barX - ctx.measureText(topTextData.value).width / 2, barY - 10); // Above the bar
-//           }
-
-//           // Check if there's left text for this bar
-//           const leftTextData = leftText.find((item) => item.index === index);
-//           if (leftTextData) {
-//             ctx.fillStyle = leftTextData.color || '#000'; // Default to black if no color
-//             ctx.fillText(leftTextData.value, barX - 20, barY); // Left of the bar
-//           }
-
-//           // Check if there's right text for this bar
-//           const rightTextData = rightText.find((item) => item.index === index);
-//           if (rightTextData) {
-//             ctx.fillStyle = rightTextData.color || '#000'; // Default to black if no color
-//             ctx.fillText(rightTextData.value, barX + 20, barY); // Right of the bar
-//           }
-
+//           // Render text inside the bar
+//           ctx.fillText(`${value}%`, barX, barY + (adjustedHeight / 2));
 //           ctx.restore();
 //         });
 //       });
 //     },
 //   };
 
+//   // Register the plugin if textInsideBarText is true
+//   if (showInsideBarText) {
+//     ChartJS.register(textInsideBarPlugin);
+//   }
+
 //   const defaultOptions = {
 //     responsive: true,
 //     maintainAspectRatio: false,
 //     plugins: {
-//       legend: {
-//         display: false,
-//       },
-//       tooltip: {
-//         enabled: true,
-//       },
-//       textPlugin, // Add the custom text plugin here
+//       legend: { display: false },
+//       tooltip: { enabled: true },
+//       datalabels: {
+//         color: '#FFFFFF',
+//         align: "top",
+//         formatter: function(value, context) {
+//             return value + '%';
+//           }
+//       }
 //     },
 //     scales: {
 //       x: {
-//         grid: {
-//           display: false,
-//         },
-//         ticks: {
-//           font: {
-//             size: 14,
-//           },
-//         },
+//         stacked: true,
+//         grid: { display: false },
+//         ticks: { font: { size: 14 } },
 //         title: {
 //           display: true,
 //           text: x_label,
@@ -139,6 +137,7 @@
 //         },
 //       },
 //       y: {
+//         stacked: true,
 //         beginAtZero: true,
 //         min: 0,
 //         ticks: {
@@ -147,7 +146,7 @@
 //         },
 //         grid: {
 //           color: '#e5e7eb',
-//           borderDash: [5, 5], // Default dashed grid lines
+//           borderDash: [5, 5],
 //         },
 //         title: {
 //           display: true,
@@ -156,7 +155,7 @@
 //         },
 //       },
 //     },
-//     ...chartOptions, // Allow overriding default options
+//     ...chartOptions,
 //   };
 
 //   return (
@@ -168,6 +167,7 @@
 
 // export default BarChart;
 
+
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -178,10 +178,11 @@ import {
   LinearScale,
   BarElement,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-// Register Chart.js components
+// Register necessary ChartJS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const BarChart = ({
@@ -192,11 +193,55 @@ const BarChart = ({
   height = '400px',
   x_label,
   y_label,
-  top_label = [], // Array of { index: 'bar index', value: 'text', color: 'color' }
-  showInsideBarText = false, // Toggle for text inside bars
+  top_label = [],
+  showInsideBarText = false,
+  barRounded = false,
+  minBarHeight = false, // Minimum height for bars with zero value
 }) => {
   const chartRef = useRef(null);
   const [gradientColors, setGradientColors] = useState([]);
+  
+  // Register ChartDataLabels only if showInsideBarText is true
+  useEffect(() => {
+    if (showInsideBarText) {
+      ChartJS.register(ChartDataLabels);
+    }
+  }, [showInsideBarText]);
+
+
+  
+  // Custom plugin to ensure bars with zero value have a minimum height
+  const minHeightPlugin = {
+    id: 'minHeightPlugin',
+    beforeDraw: (chart) => {
+      const ctx = chart.ctx;
+      const datasets = chart.data.datasets;
+  
+      // Only apply minimum height logic if minBarHeight is set and greater than 0
+      if (minBarHeight) {
+        datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((bar, index) => {
+            const value = dataset.data[index];
+  
+            // If the value is zero, adjust the height to the minimum value
+            if (value === 0) {
+              bar.height = minBarHeight;
+              bar.y = chart.scales['y'].getPixelForValue(0) - bar.height;
+            }
+          });
+        });
+      }
+    },
+  };
+  
+
+  // Register the minHeightPlugin only when minBarHeight > 0
+  useEffect(() => {
+    if (minBarHeight) {
+      ChartJS.register(minHeightPlugin);
+    }
+  }, [minBarHeight]);
 
   // Generate gradients
   const createGradients = (chart) => {
@@ -222,43 +267,12 @@ const BarChart = ({
     ...chartData,
     datasets: chartData.datasets.map((dataset, index) => ({
       ...dataset,
-      backgroundColor: gradientColors.length
-        ? gradientColors
-        : barColors.map((c) => c[1]),
-      borderRadius: dataset.borderRadius || 10,
+      backgroundColor: gradientColors.length ? gradientColors : barColors.map((c) => c[1]),
+      borderRadius: barRounded ? 100 : dataset.borderRadius || 10,
       barThickness: dataset.barThickness || 50,
     })),
   };
 
-  // Custom plugin to render text inside bars
-  const textInsideBarPlugin = {
-    id: 'textInsideBarPlugin',
-    beforeDraw: (chart) => {
-      if (!showInsideBarText) return; // Do nothing if text display is disabled
-
-      const ctx = chart.ctx;
-      const datasets = chart.data.datasets;
-
-      datasets.forEach((dataset, datasetIndex) => {
-        const meta = chart.getDatasetMeta(datasetIndex);
-        meta.data.forEach((bar, index) => {
-          const value = dataset.data[index];
-          const barX = bar.x;
-          const barY = bar.y;
-
-          ctx.save();
-          ctx.font = 'bold 12px Arial';
-          ctx.fillStyle = '#FFFFFF'; // White text color
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-
-          // Calculate position and render text
-          ctx.fillText(`${value}%`, barX, barY + (bar.height / 2));
-          ctx.restore();
-        });
-      });
-    },
-  };
 
   const defaultOptions = {
     responsive: true,
@@ -266,10 +280,22 @@ const BarChart = ({
     plugins: {
       legend: { display: false },
       tooltip: { enabled: true },
-      textInsideBarPlugin, // Add custom plugin here
+      datalabels: showInsideBarText && {
+        color: '#FFFFFF',
+        align: 'center',
+        anchor: 'center',
+        formatter: function(value) {
+          return value + '%';
+        },
+        font: {
+          size: 12,
+          weight: 'bold',
+        },
+      },
     },
     scales: {
       x: {
+        stacked: true,
         grid: { display: false },
         ticks: { font: { size: 14 } },
         title: {
@@ -279,6 +305,7 @@ const BarChart = ({
         },
       },
       y: {
+        stacked: true,
         beginAtZero: true,
         min: 0,
         ticks: {
