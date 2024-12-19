@@ -12,41 +12,6 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-// Define the custom plugin for drawing the labels above the bars
-// const doubleLabels = {
-//   id: "doubleLabels",
-//   afterDatasetsDraw(chart, args, plugins) {
-//     const { ctx, data } = chart;
-//     const top_label = chart.options.top_label; // Get top_label from chart options
-//     ctx.save();
-
-//     // Iterate through the data points of the first dataset (index 0)
-//     chart.getDatasetMeta(0).data.forEach((dataPoint, index) => {
-//       // Get the value of the current data point from the dataset
-//       const value = chart.data.datasets[0].data[index];
-//       const xLabel = chart.data.labels[index];
-
-//       // Only draw the label if the value is greater than 0
-//       if (value > 0 && top_label) {
-//         ctx.font = 'thin 12px sans-serif';
-//         ctx.fillStyle = 'black'; // You can dynamically adjust this based on barColor if needed
-//         ctx.fillText(`${xLabel}, ${value}%`, dataPoint.x - 20, dataPoint.y - 9); // -10 to position the text above the bar
-
-//         ctx.rotate(-Math.PI / 2)
-
-
-//         const barHeight = dataPoint.height; // Get the height of the bar
-//         const barCenterY = dataPoint.y + barHeight / 2;
-
-//         // Draw the text vertically (start from top to bottom)
-//         ctx.fillText(`Rate: ${xLabel}`, dataPoint.x + 15, barCenterY - 10); // -10 to adjust for font size
-//         ctx.fillText(`Incentive ${value}`, dataPoint.x + 15, barCenterY + 5);
-//       }
-//     });
-
-//     ctx.restore();
-//   }
-// };
 
 const doubleLabels = {
     id: "doubleLabels",
@@ -99,11 +64,13 @@ const doubleLabels = {
 
           // Draw the horizontal label (above the bar)
           ctx.font = "12px sans-serif";
-          ctx.fillStyle = "black";
+          ctx.fillStyle = "#1492E6";
           ctx.fillText(`${extractNumber(xLabel)}, ${value}%`, dataPoint.x - 20, dataPoint.y - 10);
   
           const barHeight = dataPoint.height; // Get the height of the bar
         const barCenterY = dataPoint.y + barHeight / 2; // Vertical center of the bar
+
+        ctx.fillStyle = "black";
 
         // Adjust the text position to center it vertically relative to the bar
         ctx.fillText(`Rate: ${extractNumber(xLabel)}`, dataPoint.x + 15, barCenterY - 10); // -10 to adjust for font size
@@ -114,6 +81,39 @@ const doubleLabels = {
       ctx.restore();
     },
   };
+
+  const minimumBarHeight = {
+    id: "minimumBarHeight",
+    beforeDatasetsDraw(chart) {
+      const { ctx } = chart;
+      ctx.save();
+  
+      chart.getDatasetMeta(0).data.forEach((bar, index) => {
+        const value = chart.data.datasets[0].data[index];
+
+        const top_label = chart.options.top_label
+
+        if (value === 0 && !top_label) {
+          const minBarHeight = 10; // Set the minimum height for zero-value bars
+          const originalHeight = bar.height;
+  
+          // Adjust bar height to be at least the minimum height
+          const newHeight = Math.max(originalHeight, minBarHeight);
+  
+          // Calculate new Y position to maintain the visual alignment
+          const yDiff = originalHeight - newHeight;
+          bar.y += yDiff; // Push bar upwards
+          bar.height = newHeight; // Set the new height
+          bar.borderRadius = 10
+        }
+      });
+  
+      ctx.restore();
+    },
+  };
+
+
+
   
   
 
@@ -132,7 +132,7 @@ const topLable = {
         const top_label = chart.options.top_label
       // Only draw the label if the value is greater than 0
 
-      if (value > 0 && !top_label) {
+      if (value > 1 && !top_label) {
         ctx.textAlign = 'center'
         ctx.font = 'thin 12px sans-serif';
         ctx.fillStyle = 'white'; // You can dynamically adjust this based on barColor if needed
@@ -146,7 +146,7 @@ const topLable = {
 };
 
 // Register necessary ChartJS components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, doubleLabels, topLable);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, doubleLabels, topLable, minimumBarHeight);
 
 const BarChart = ({
   chartData,
@@ -229,7 +229,7 @@ const BarChart = ({
         },
         title: {
           display: true,
-          text: `${y_label}`,
+          text: `--------> ${y_label} <---------------`,
           color: '#1492E6',
         },
       },
