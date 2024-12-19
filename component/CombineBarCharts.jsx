@@ -96,7 +96,7 @@ export default function CombineBarCharts({
                   i
                 </div>
                 {infoXOn && (
-                  <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]">
+                  <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]"  style={{fontSize: "13px"}}>
                     Hello world Hello world Hello world Hello world Hello world
                   </p>
                 )}
@@ -545,7 +545,7 @@ export default function CombineBarCharts({
                   i
                 </div>
                 {infoYOn && (
-                  <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]">
+                  <p className="absolute bg-white p-2 rounded-lg right-[-5rem] top-10 w-[10rem]"  style={{fontSize: "13px"}}>
                     Hello world Hello world Hello world Hello world Hello world
                   </p>
                 )}
